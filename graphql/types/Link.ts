@@ -20,7 +20,7 @@ export const Link = objectType({
         return await ctx.prisma.link
           .findUnique({
             where: {
-              id: _parent.id ?? undefined,
+              id: _parent.id,
             },
           })
           .users();

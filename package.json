@@ -11,7 +11,8 @@
     "lint": "next lint",
     "build": "next build",
     "nexus-typegen": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' --transpile-only ./graphql/schema.ts",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "dev:all": "concurrently -r \"next dev\" \"graphql-codegen --watch \"generated/schema.graphql\"\""
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -37,6 +38,7 @@
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "autoprefixer": "^10.4.8",
+    "concurrently": "^7.3.0",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",

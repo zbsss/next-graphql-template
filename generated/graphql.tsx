@@ -38,12 +38,11 @@ export enum Role {
 
 export type User = {
   __typename?: 'User';
-  bookmarks?: Maybe<Array<Maybe<Link>>>;
+  bookmarks: Array<Link>;
   email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
   image?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  role?: Maybe<Role>;
+  role: Role;
 };
 
 export type AllLinksQueryQueryVariables = Exact<{ [key: string]: never; }>;

@@ -53,10 +53,9 @@ export interface NexusGenObjects {
   Query: {};
   User: { // root type
     email?: string | null; // String
-    id?: string | null; // String
+    id: string; // String!
     image?: string | null; // String
-    name?: string | null; // String
-    role?: NexusGenEnums['Role'] | null; // Role
+    role: NexusGenEnums['Role']; // Role!
   }
 }
 
@@ -84,12 +83,11 @@ export interface NexusGenFieldTypes {
     links: NexusGenRootTypes['Link'][]; // [Link!]!
   }
   User: { // field return type
-    bookmarks: Array<NexusGenRootTypes['Link'] | null> | null; // [Link]
+    bookmarks: NexusGenRootTypes['Link'][]; // [Link!]!
     email: string | null; // String
-    id: string | null; // String
+    id: string; // String!
     image: string | null; // String
-    name: string | null; // String
-    role: NexusGenEnums['Role'] | null; // Role
+    role: NexusGenEnums['Role']; // Role!
   }
 }
 
@@ -111,7 +109,6 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     id: 'String'
     image: 'String'
-    name: 'String'
     role: 'Role'
   }
 }
