@@ -42,6 +42,9 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Counter: { // root type
+    count: number; // Int!
+  }
   Link: { // root type
     category: string; // String!
     description: string; // String!
@@ -71,6 +74,9 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Counter: { // field return type
+    count: number; // Int!
+  }
   Link: { // field return type
     category: string; // String!
     description: string; // String!
@@ -81,10 +87,11 @@ export interface NexusGenFieldTypes {
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   Query: { // field return type
+    counter: NexusGenRootTypes['Counter']; // Counter!
     links: NexusGenRootTypes['Link'][]; // [Link!]!
   }
   Subscription: { // field return type
-    truths: boolean | null; // Boolean
+    counter: NexusGenRootTypes['Counter']; // Counter!
   }
   User: { // field return type
     bookmarks: NexusGenRootTypes['Link'][]; // [Link!]!
@@ -96,6 +103,9 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Counter: { // field return type name
+    count: 'Int'
+  }
   Link: { // field return type name
     category: 'String'
     description: 'String'
@@ -106,10 +116,11 @@ export interface NexusGenFieldTypeNames {
     users: 'User'
   }
   Query: { // field return type name
+    counter: 'Counter'
     links: 'Link'
   }
   Subscription: { // field return type name
-    truths: 'Boolean'
+    counter: 'Counter'
   }
   User: { // field return type name
     bookmarks: 'Link'

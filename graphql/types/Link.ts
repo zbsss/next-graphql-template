@@ -1,4 +1,4 @@
-import { extendType, objectType, subscriptionType } from 'nexus';
+import { extendType, objectType } from 'nexus';
 import { User } from './User';
 
 export const Link = objectType({
@@ -36,24 +36,6 @@ export const LinksQuery = extendType({
       type: 'Link',
       resolve(_parent, _args, ctx) {
         return ctx.prisma.link.findMany();
-      },
-    });
-  },
-});
-
-export const Sub = subscriptionType({
-  definition(t) {
-    t.boolean('truths', {
-      subscribe() {
-        return (async function* () {
-          while (true) {
-            await new Promise((res) => setTimeout(res, 1000));
-            yield Math.random() > 0.5;
-          }
-        })();
-      },
-      resolve(eventData) {
-        return eventData;
       },
     });
   },

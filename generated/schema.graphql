@@ -2,6 +2,10 @@
 ### Do not make changes to this file directly
 
 
+type Counter {
+  count: Int!
+}
+
 type Link {
   category: String!
   description: String!
@@ -13,6 +17,7 @@ type Link {
 }
 
 type Query {
+  counter: Counter!
   links: [Link!]!
 }
 
@@ -22,7 +27,7 @@ enum Role {
 }
 
 type Subscription {
-  truths: Boolean
+  counter: Counter!
 }
 
 type User {

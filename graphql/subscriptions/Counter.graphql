@@ -1,0 +1,11 @@
+subscription LiveCounter {
+  counter {
+    count
+  }
+}
+
+query Counter {
+  counter {
+    count
+  }
+}

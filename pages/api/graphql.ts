@@ -25,7 +25,7 @@ const apolloServer = new ApolloServer({
   context: createContext,
   plugins: [
     {
-      async serverWillStart(...asdf) {
+      async serverWillStart(...args) {
         return {
           async drainServer() {
             console.log(`ApolloServer: drain server :>>>>>>>>>>>>>>>>>>`);
