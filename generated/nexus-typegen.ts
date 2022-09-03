@@ -51,6 +51,7 @@ export interface NexusGenObjects {
     url: string; // String!
   }
   Query: {};
+  Subscription: {};
   User: { // root type
     email?: string | null; // String
     id: string; // String!
@@ -82,6 +83,9 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     links: NexusGenRootTypes['Link'][]; // [Link!]!
   }
+  Subscription: { // field return type
+    truths: boolean | null; // Boolean
+  }
   User: { // field return type
     bookmarks: NexusGenRootTypes['Link'][]; // [Link!]!
     email: string | null; // String
@@ -103,6 +107,9 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     links: 'Link'
+  }
+  Subscription: { // field return type name
+    truths: 'Boolean'
   }
   User: { // field return type name
     bookmarks: 'Link'

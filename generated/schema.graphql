@@ -21,6 +21,10 @@ enum Role {
   USER
 }
 
+type Subscription {
+  truths: Boolean
+}
+
 type User {
   bookmarks: [Link!]!
   email: String
