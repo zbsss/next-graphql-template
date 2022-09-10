@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import IncrementCounterButton from '../components/IncrementCounterButton';
 import { LiveCounterDocument, useCounterQuery } from '../generated/graphql';
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>{JSON.stringify(data)}</h1>
+      <IncrementCounterButton />
     </div>
   );
 }

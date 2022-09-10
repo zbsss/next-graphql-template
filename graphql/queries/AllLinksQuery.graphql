@@ -1,10 +1,19 @@
-query AllLinksQuery {
-  links {
-    id
-    title
-    url
-    description
-    imageUrl
-    category
+query AllLinks($first: Int, $after: String) {
+  links(first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        imageUrl
+        url
+        title
+        category
+        description
+        id
+      }
+    }
   }
 }

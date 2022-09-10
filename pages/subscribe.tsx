@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import IncrementCounterButton from '../components/IncrementCounterButton';
 import { useLiveCounterSubscription } from '../generated/graphql';
 
 export default function Home() {
@@ -29,6 +30,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>{JSON.stringify(count)}</h1>
+      <IncrementCounterButton />
     </div>
   );
 }

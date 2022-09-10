@@ -1,3 +1,4 @@
+import { connectionFromArraySlice, cursorToOffset } from 'graphql-relay';
 import { extendType, objectType } from 'nexus';
 import { User } from './User';
 
@@ -32,10 +33,28 @@ export const Link = objectType({
 export const LinksQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.nonNull.list.nonNull.field('links', {
-      type: 'Link',
-      resolve(_parent, _args, ctx) {
-        return ctx.prisma.link.findMany();
+    t.nonNull.connectionField('links', {
+      type: Link,
+      resolve: async (_parent, { after, first }, ctx) => {
+        const offset = after ? cursorToOffset(after) + 1 : 0;
+        if (isNaN(offset)) throw new Error('Invalid cursor');
+
+        // by default take 10 elements per page
+        first = first || 10;
+
+        const [totalCount, items] = await Promise.all([
+          ctx.prisma.link.count(),
+          ctx.prisma.link.findMany({
+            take: first,
+            skip: offset,
+          }),
+        ]);
+
+        return connectionFromArraySlice(
+          items,
+          { first, after },
+          { sliceStart: offset, arrayLength: totalCount }
+        );
       },
     });
   },

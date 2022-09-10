@@ -9,3 +9,9 @@ query Counter {
     count
   }
 }
+
+mutation IncrementCounter {
+  counter {
+    count
+  }
+}

@@ -31,10 +31,52 @@ export type Link = {
   users: Array<User>;
 };
 
+export type LinkConnection = {
+  __typename?: 'LinkConnection';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
+  edges?: Maybe<Array<Maybe<LinkEdge>>>;
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+  pageInfo: PageInfo;
+};
+
+export type LinkEdge = {
+  __typename?: 'LinkEdge';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
+  cursor: Scalars['String'];
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
+  node?: Maybe<Link>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  counter: Counter;
+};
+
+/** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  /** The cursor corresponding to the last nodes in edges. Null if the connection is empty. */
+  endCursor?: Maybe<Scalars['String']>;
+  /** Used to indicate whether more edges exist following the set defined by the clients arguments. */
+  hasNextPage: Scalars['Boolean'];
+  /** Used to indicate whether more edges exist prior to the set defined by the clients arguments. */
+  hasPreviousPage: Scalars['Boolean'];
+  /** The cursor corresponding to the first nodes in edges. Null if the connection is empty. */
+  startCursor?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   counter: Counter;
-  links: Array<Link>;
+  links: LinkConnection;
+};
+
+
+export type QueryLinksArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
 };
 
 export enum Role {
@@ -56,10 +98,13 @@ export type User = {
   role: Role;
 };
 
-export type AllLinksQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllLinksQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type AllLinksQueryQuery = { __typename?: 'Query', links: Array<{ __typename?: 'Link', id: string, title: string, url: string, description: string, imageUrl: string, category: string }> };
+export type AllLinksQuery = { __typename?: 'Query', links: { __typename?: 'LinkConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean }, edges?: Array<{ __typename?: 'LinkEdge', cursor: string, node?: { __typename?: 'Link', imageUrl: string, url: string, title: string, category: string, description: string, id: string } | null } | null> | null } };
 
 export type LiveCounterSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -71,46 +116,62 @@ export type CounterQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CounterQuery = { __typename?: 'Query', counter: { __typename?: 'Counter', count: number } };
 
+export type IncrementCounterMutationVariables = Exact<{ [key: string]: never; }>;
 
-export const AllLinksQueryDocument = gql`
-    query AllLinksQuery {
-  links {
-    id
-    title
-    url
-    description
-    imageUrl
-    category
+
+export type IncrementCounterMutation = { __typename?: 'Mutation', counter: { __typename?: 'Counter', count: number } };
+
+
+export const AllLinksDocument = gql`
+    query AllLinks($first: Int, $after: String) {
+  links(first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        imageUrl
+        url
+        title
+        category
+        description
+        id
+      }
+    }
   }
 }
     `;
 
 /**
- * __useAllLinksQueryQuery__
+ * __useAllLinksQuery__
  *
- * To run a query within a React component, call `useAllLinksQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllLinksQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllLinksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAllLinksQueryQuery({
+ * const { data, loading, error } = useAllLinksQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
-export function useAllLinksQueryQuery(baseOptions?: Apollo.QueryHookOptions<AllLinksQueryQuery, AllLinksQueryQueryVariables>) {
+export function useAllLinksQuery(baseOptions?: Apollo.QueryHookOptions<AllLinksQuery, AllLinksQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllLinksQueryQuery, AllLinksQueryQueryVariables>(AllLinksQueryDocument, options);
+        return Apollo.useQuery<AllLinksQuery, AllLinksQueryVariables>(AllLinksDocument, options);
       }
-export function useAllLinksQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllLinksQueryQuery, AllLinksQueryQueryVariables>) {
+export function useAllLinksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllLinksQuery, AllLinksQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllLinksQueryQuery, AllLinksQueryQueryVariables>(AllLinksQueryDocument, options);
+          return Apollo.useLazyQuery<AllLinksQuery, AllLinksQueryVariables>(AllLinksDocument, options);
         }
-export type AllLinksQueryQueryHookResult = ReturnType<typeof useAllLinksQueryQuery>;
-export type AllLinksQueryLazyQueryHookResult = ReturnType<typeof useAllLinksQueryLazyQuery>;
-export type AllLinksQueryQueryResult = Apollo.QueryResult<AllLinksQueryQuery, AllLinksQueryQueryVariables>;
+export type AllLinksQueryHookResult = ReturnType<typeof useAllLinksQuery>;
+export type AllLinksLazyQueryHookResult = ReturnType<typeof useAllLinksLazyQuery>;
+export type AllLinksQueryResult = Apollo.QueryResult<AllLinksQuery, AllLinksQueryVariables>;
 export const LiveCounterDocument = gql`
     subscription LiveCounter {
   counter {
@@ -174,3 +235,35 @@ export function useCounterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Co
 export type CounterQueryHookResult = ReturnType<typeof useCounterQuery>;
 export type CounterLazyQueryHookResult = ReturnType<typeof useCounterLazyQuery>;
 export type CounterQueryResult = Apollo.QueryResult<CounterQuery, CounterQueryVariables>;
+export const IncrementCounterDocument = gql`
+    mutation IncrementCounter {
+  counter {
+    count
+  }
+}
+    `;
+export type IncrementCounterMutationFn = Apollo.MutationFunction<IncrementCounterMutation, IncrementCounterMutationVariables>;
+
+/**
+ * __useIncrementCounterMutation__
+ *
+ * To run a mutation, you first call `useIncrementCounterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIncrementCounterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [incrementCounterMutation, { data, loading, error }] = useIncrementCounterMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIncrementCounterMutation(baseOptions?: Apollo.MutationHookOptions<IncrementCounterMutation, IncrementCounterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IncrementCounterMutation, IncrementCounterMutationVariables>(IncrementCounterDocument, options);
+      }
+export type IncrementCounterMutationHookResult = ReturnType<typeof useIncrementCounterMutation>;
+export type IncrementCounterMutationResult = Apollo.MutationResult<IncrementCounterMutation>;
+export type IncrementCounterMutationOptions = Apollo.BaseMutationOptions<IncrementCounterMutation, IncrementCounterMutationVariables>;

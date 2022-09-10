@@ -53,6 +53,21 @@ export interface NexusGenObjects {
     title: string; // String!
     url: string; // String!
   }
+  LinkConnection: { // root type
+    edges?: Array<NexusGenRootTypes['LinkEdge'] | null> | null; // [LinkEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  LinkEdge: { // root type
+    cursor: string; // String!
+    node?: NexusGenRootTypes['Link'] | null; // Link
+  }
+  Mutation: {};
+  PageInfo: { // root type
+    endCursor?: string | null; // String
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
+    startCursor?: string | null; // String
+  }
   Query: {};
   Subscription: {};
   User: { // root type
@@ -86,9 +101,26 @@ export interface NexusGenFieldTypes {
     url: string; // String!
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
+  LinkConnection: { // field return type
+    edges: Array<NexusGenRootTypes['LinkEdge'] | null> | null; // [LinkEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  LinkEdge: { // field return type
+    cursor: string; // String!
+    node: NexusGenRootTypes['Link'] | null; // Link
+  }
+  Mutation: { // field return type
+    counter: NexusGenRootTypes['Counter']; // Counter!
+  }
+  PageInfo: { // field return type
+    endCursor: string | null; // String
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
+    startCursor: string | null; // String
+  }
   Query: { // field return type
     counter: NexusGenRootTypes['Counter']; // Counter!
-    links: NexusGenRootTypes['Link'][]; // [Link!]!
+    links: NexusGenRootTypes['LinkConnection']; // LinkConnection!
   }
   Subscription: { // field return type
     counter: NexusGenRootTypes['Counter']; // Counter!
@@ -115,9 +147,26 @@ export interface NexusGenFieldTypeNames {
     url: 'String'
     users: 'User'
   }
+  LinkConnection: { // field return type name
+    edges: 'LinkEdge'
+    pageInfo: 'PageInfo'
+  }
+  LinkEdge: { // field return type name
+    cursor: 'String'
+    node: 'Link'
+  }
+  Mutation: { // field return type name
+    counter: 'Counter'
+  }
+  PageInfo: { // field return type name
+    endCursor: 'String'
+    hasNextPage: 'Boolean'
+    hasPreviousPage: 'Boolean'
+    startCursor: 'String'
+  }
   Query: { // field return type name
     counter: 'Counter'
-    links: 'Link'
+    links: 'LinkConnection'
   }
   Subscription: { // field return type name
     counter: 'Counter'
@@ -132,6 +181,14 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Query: {
+    links: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
