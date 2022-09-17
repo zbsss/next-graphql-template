@@ -15,7 +15,7 @@ const wsLink =
   typeof window !== 'undefined'
     ? new GraphQLWsLink(
         createClient({
-          url: 'ws://localhost:3000/api/graphql',
+          url: `wss://${process.env.NEXT_PUBLIC_HOSTNAME}:${process.env.NEXT_PUBLIC_PORT}/api/graphql`,
         })
       )
     : null;
@@ -37,7 +37,7 @@ const link =
 
 const apolloClient = new ApolloClient({
   link,
-  uri: 'http://localhost:3000/api/graphql',
+  uri: `https://${process.env.NEXT_PUBLIC_HOSTNAME}:${process.env.NEXT_PUBLIC_PORT}/api/graphql`,
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
