@@ -50,6 +50,16 @@ export type LinkEdge = {
 export type Mutation = {
   __typename?: 'Mutation';
   counter: Counter;
+  createLink: Link;
+};
+
+
+export type MutationCreateLinkArgs = {
+  category: Scalars['String'];
+  description: Scalars['String'];
+  imageUrl: Scalars['String'];
+  title: Scalars['String'];
+  url: Scalars['String'];
 };
 
 /** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
@@ -98,14 +108,6 @@ export type User = {
   role: Role;
 };
 
-export type AllLinksQueryVariables = Exact<{
-  first?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type AllLinksQuery = { __typename?: 'Query', links: { __typename?: 'LinkConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean }, edges?: Array<{ __typename?: 'LinkEdge', cursor: string, node?: { __typename?: 'Link', imageUrl: string, url: string, title: string, category: string, description: string, id: string } | null } | null> | null } };
-
 export type LiveCounterSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -121,57 +123,26 @@ export type IncrementCounterMutationVariables = Exact<{ [key: string]: never; }>
 
 export type IncrementCounterMutation = { __typename?: 'Mutation', counter: { __typename?: 'Counter', count: number } };
 
+export type AllLinksQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+}>;
 
-export const AllLinksDocument = gql`
-    query AllLinks($first: Int, $after: String) {
-  links(first: $first, after: $after) {
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    edges {
-      cursor
-      node {
-        imageUrl
-        url
-        title
-        category
-        description
-        id
-      }
-    }
-  }
-}
-    `;
 
-/**
- * __useAllLinksQuery__
- *
- * To run a query within a React component, call `useAllLinksQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllLinksQuery({
- *   variables: {
- *      first: // value for 'first'
- *      after: // value for 'after'
- *   },
- * });
- */
-export function useAllLinksQuery(baseOptions?: Apollo.QueryHookOptions<AllLinksQuery, AllLinksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllLinksQuery, AllLinksQueryVariables>(AllLinksDocument, options);
-      }
-export function useAllLinksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllLinksQuery, AllLinksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllLinksQuery, AllLinksQueryVariables>(AllLinksDocument, options);
-        }
-export type AllLinksQueryHookResult = ReturnType<typeof useAllLinksQuery>;
-export type AllLinksLazyQueryHookResult = ReturnType<typeof useAllLinksLazyQuery>;
-export type AllLinksQueryResult = Apollo.QueryResult<AllLinksQuery, AllLinksQueryVariables>;
+export type AllLinksQuery = { __typename?: 'Query', links: { __typename?: 'LinkConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean }, edges?: Array<{ __typename?: 'LinkEdge', cursor: string, node?: { __typename?: 'Link', imageUrl: string, url: string, title: string, category: string, description: string, id: string } | null } | null> | null } };
+
+export type CreateLinkMutationVariables = Exact<{
+  title: Scalars['String'];
+  url: Scalars['String'];
+  imageUrl: Scalars['String'];
+  category: Scalars['String'];
+  description: Scalars['String'];
+}>;
+
+
+export type CreateLinkMutation = { __typename?: 'Mutation', createLink: { __typename?: 'Link', id: string, title: string, url: string, description: string, imageUrl: string, category: string } };
+
+
 export const LiveCounterDocument = gql`
     subscription LiveCounter {
   counter {
@@ -267,3 +238,101 @@ export function useIncrementCounterMutation(baseOptions?: Apollo.MutationHookOpt
 export type IncrementCounterMutationHookResult = ReturnType<typeof useIncrementCounterMutation>;
 export type IncrementCounterMutationResult = Apollo.MutationResult<IncrementCounterMutation>;
 export type IncrementCounterMutationOptions = Apollo.BaseMutationOptions<IncrementCounterMutation, IncrementCounterMutationVariables>;
+export const AllLinksDocument = gql`
+    query AllLinks($first: Int, $after: String) {
+  links(first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        imageUrl
+        url
+        title
+        category
+        description
+        id
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAllLinksQuery__
+ *
+ * To run a query within a React component, call `useAllLinksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllLinksQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useAllLinksQuery(baseOptions?: Apollo.QueryHookOptions<AllLinksQuery, AllLinksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllLinksQuery, AllLinksQueryVariables>(AllLinksDocument, options);
+      }
+export function useAllLinksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllLinksQuery, AllLinksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllLinksQuery, AllLinksQueryVariables>(AllLinksDocument, options);
+        }
+export type AllLinksQueryHookResult = ReturnType<typeof useAllLinksQuery>;
+export type AllLinksLazyQueryHookResult = ReturnType<typeof useAllLinksLazyQuery>;
+export type AllLinksQueryResult = Apollo.QueryResult<AllLinksQuery, AllLinksQueryVariables>;
+export const CreateLinkDocument = gql`
+    mutation CreateLink($title: String!, $url: String!, $imageUrl: String!, $category: String!, $description: String!) {
+  createLink(
+    title: $title
+    url: $url
+    imageUrl: $imageUrl
+    category: $category
+    description: $description
+  ) {
+    id
+    title
+    url
+    description
+    imageUrl
+    category
+  }
+}
+    `;
+export type CreateLinkMutationFn = Apollo.MutationFunction<CreateLinkMutation, CreateLinkMutationVariables>;
+
+/**
+ * __useCreateLinkMutation__
+ *
+ * To run a mutation, you first call `useCreateLinkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLinkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLinkMutation, { data, loading, error }] = useCreateLinkMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      url: // value for 'url'
+ *      imageUrl: // value for 'imageUrl'
+ *      category: // value for 'category'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useCreateLinkMutation(baseOptions?: Apollo.MutationHookOptions<CreateLinkMutation, CreateLinkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateLinkMutation, CreateLinkMutationVariables>(CreateLinkDocument, options);
+      }
+export type CreateLinkMutationHookResult = ReturnType<typeof useCreateLinkMutation>;
+export type CreateLinkMutationResult = Apollo.MutationResult<CreateLinkMutation>;
+export type CreateLinkMutationOptions = Apollo.BaseMutationOptions<CreateLinkMutation, CreateLinkMutationVariables>;

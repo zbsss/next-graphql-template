@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-micro';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { WebSocketServer } from 'ws';
-import { createContext } from '../../graphql/context';
+import { createBaseContext, createUserContext } from '../../graphql/context';
 import { schema } from '../../graphql/schema';
 import Cors from 'micro-cors';
 import { Disposable } from 'graphql-ws';
@@ -22,7 +22,7 @@ export const config = {
 const apolloServer = new ApolloServer({
   schema,
   cache: 'bounded',
-  context: createContext,
+  context: createUserContext,
   plugins: [
     {
       async serverWillStart(...args) {
@@ -71,7 +71,8 @@ const handler = async (req: MicroRequest, res: ServerResponse) => {
       graphqlWSS = useServer(
         {
           schema,
-          context: createContext,
+          // this is a context for websockets so we don't have access to session here like in the normal context
+          context: createBaseContext,
         },
         wss
       );

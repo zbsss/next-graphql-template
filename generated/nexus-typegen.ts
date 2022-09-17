@@ -111,6 +111,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     counter: NexusGenRootTypes['Counter']; // Counter!
+    createLink: NexusGenRootTypes['Link']; // Link!
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -157,6 +158,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     counter: 'Counter'
+    createLink: 'Link'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -181,6 +183,15 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createLink: { // args
+      category: string; // String!
+      description: string; // String!
+      imageUrl: string; // String!
+      title: string; // String!
+      url: string; // String!
+    }
+  }
   Query: {
     links: { // args
       after?: string | null; // String

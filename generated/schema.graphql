@@ -38,6 +38,7 @@ type LinkEdge {
 
 type Mutation {
   counter: Counter!
+  createLink(category: String!, description: String!, imageUrl: String!, title: String!, url: String!): Link!
 }
 
 """
